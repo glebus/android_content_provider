@@ -89,12 +89,6 @@ abstract class AndroidContentProvider : ContentProvider(), LifecycleOwner, Utils
      */
     abstract val entrypointName: String // TODO: eventually replace it with initialArguments
 
-    /**
-     * Should be set to a entrypoint package this [ContentProvider]
-     * will call in Dart when it's created.
-     */
-    abstract val entrypointPackage: String
-
     override fun getLifecycle(): Lifecycle {
         ensureLifecycleInitialized()
         return lifecycle!!
@@ -110,7 +104,7 @@ abstract class AndroidContentProvider : ContentProvider(), LifecycleOwner, Utils
     override fun onCreate(): Boolean {
         val flutterLoader = FlutterInjector.instance().flutterLoader()
         flutterLoader.startInitialization(context!!.applicationContext)
-        val entrypoint = DartExecutor.DartEntrypoint(flutterLoader.findAppBundlePath(), entrypointPackage, entrypointName)
+        val entrypoint = DartExecutor.DartEntrypoint(flutterLoader.findAppBundlePath(), entrypointName)
         val engineGroup = getFlutterEngineGroup(context!!)
         engine = engineGroup.createAndRunEngine(context!!, entrypoint)
         ensureLifecycleInitialized()
