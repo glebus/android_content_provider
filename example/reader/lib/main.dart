@@ -7,11 +7,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:android_content_provider/android_content_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Permission.storage.request();
   runApp(const MyApp());
 }
 
@@ -33,40 +31,21 @@ class _MyAppState extends State<MyApp> {
 
   void fetch() async {
     final cursor = await AndroidContentResolver.instance.query(
-      // MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-      uri: 'content://media/external/audio/media',
-      projection: ['_id', 'title'],
+      uri:
+          'content://com.nt4f04und.android_content_provider_example.MyAndroidContentProvider',
+      projection: null,
       selection: null,
       selectionArgs: null,
       sortOrder: null,
     );
+
     try {
-      final end = (await cursor!.batchedGet().getCount().commit()).first as int;
-      final batch = cursor.batchedGet().getInt(0).getString(1);
+      // if (await cursor!.moveToFirst()) {
+      print((await cursor!.batchedGet().getString(1).commitRange(0, 1))
+          .first
+          .first);
 
-      // Fast!
-      // While a bit less flexible, commitRange is much faster (approximately 10x)
-      await measure(() async {
-        songs = await batch.commitRange(0, end);
-      });
-
-      if (mounted) {
-        setState(() {
-          // We loaded the songs.
-        });
-      }
-
-      // Slow!
-      // But can be useful for lots of atomic operations on large cursors.
-      var slowSongs = [];
-      await measure(() async {
-        while (await cursor.moveToNext()) {
-          slowSongs.add(await batch.commit());
-        }
-      });
-
-      // prints true
-      print(slowSongs.toString() == songs.toString());
+      // }
     } finally {
       cursor?.close();
     }

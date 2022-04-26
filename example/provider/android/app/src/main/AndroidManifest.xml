@@ -2,6 +2,10 @@
     package="com.nt4f04und.android_content_provider_example">
    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
+   <permission
+    android:name="com.nt4f04und.android_content_provider_example.PERMISSION"
+    android:protectionLevel="signature"/>
+
    <application
         android:label="android_content_provider_example"
         android:name="${applicationName}"
@@ -27,6 +31,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <provider
+            android:name=".MyAndroidContentProvider"
+            android:authorities="com.nt4f04und.android_content_provider_example.MyAndroidContentProvider"
+            
+            android:exported="true" />
+            <!-- android:readPermission="com.nt4f04und.android_content_provider_example.PERMISSION" -->
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
