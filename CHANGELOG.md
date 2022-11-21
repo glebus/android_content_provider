@@ -1,3 +1,13 @@
+## 0.2.2
+
+* Exposed AndroidContentResolver.methodChannel for testing
+* Made ContentObserver onChange and onChangeUris `flags` parameter non-nullable - it will always receive 0 when there are no flags
+
+## 0.2.1
+
+* Add AndroidContentProvider example and make README setup instructions more clear
+* Avoid breaking changes in Android StandardMessageCodec Flutter 2.13.0 by converting AndroidContentProviderMessageCodec from Kotlin to Java
+
 ## 0.2.0
 
 * Fixed CancellationSignal sometimes throw MissingPluginException on cancel
